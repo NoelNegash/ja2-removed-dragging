@@ -214,7 +214,7 @@ INT16 BreathPointAdjustmentForCarriedWeight( SOLDIERTYPE * pSoldier )
 	UINT32	uiCarriedPercent;
 	UINT32	uiPercentCost;
 
-	uiCarriedPercent = CalculateCarriedWeight( pSoldier, TRUE );
+	uiCarriedPercent = CalculateCarriedWeight( pSoldier );
 	if (uiCarriedPercent < 101)
 	{
 		// normal BP costs
@@ -554,10 +554,6 @@ INT16 ActionPointCost( SOLDIERTYPE *pSoldier, INT32 sGridNo, INT8 bDir, UINT16 u
 		// Flugente: riot shields lower movement speed
 		if ( pSoldier->IsRiotShieldEquipped( ) )
 			sPoints *= gItemSettings.fShieldMovementAPCostModifier;
-
-		// Flugente: dragging someone
-		if ( pSoldier->IsDragging( ) )
-			sPoints *= gItemSettings.fDragAPCostModifier;
 
 		// Flugente: scuba fins reduce movement cost in water, but increase cost on land
 		if ( pSoldier->inv[LEGPOS].exists() && HasItemFlag( pSoldier->inv[LEGPOS].usItem, SCUBA_FINS ) )
@@ -4019,9 +4015,6 @@ INT16 GetAPsStartRun( SOLDIERTYPE *pSoldier )
 	if ( pSoldier->IsRiotShieldEquipped( ) )
 		val *= gItemSettings.fShieldMovementAPCostModifier;
 
-	if ( pSoldier->IsDragging( ) )
-		val *= gItemSettings.fDragAPCostModifier;
-
 	// Athletics trait
 	if( HAS_SKILL_TRAIT( pSoldier, ATHLETICS_NT ) && gGameOptions.fNewTraitSystem )
 		val = max( 1, (INT16)(val * (100 - gSkillTraitValues.ubATAPsMovementReduction) / 100.0f + 0.5f) );
@@ -4387,19 +4380,3 @@ INT16 GetAPsToBreakWindow(SOLDIERTYPE *pSoldier, BOOLEAN fStance)
 
 	return MinAPsToPunch(pSoldier, NOWHERE);
 }
-
-INT16 GetAPsToStartDrag(SOLDIERTYPE *pSoldier, BOOLEAN fStance)
-{
-	INT16 sAPCost = 0;
-
-	if (fStance && gAnimControl[pSoldier->usAnimState].ubEndHeight != ANIM_CROUCH)
-	{
-		if (gAnimControl[pSoldier->usAnimState].ubEndHeight > ANIM_CROUCH)
-			sAPCost += GetAPsCrouch(pSoldier, TRUE);
-		else
-			sAPCost += GetAPsProne(pSoldier, TRUE);
-	}
-
-	return sAPCost;
-}
-

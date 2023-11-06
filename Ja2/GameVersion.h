@@ -25,7 +25,6 @@ extern	CHAR16		zBuildInformation[256];
 
 #define			GROWTH_MODIFIERS								184
 #define			REBELCOMMAND									183
-#define			DRAGSTRUCTURE									182 // Flugente: we can drag structures behind us
 #define			DISABILITYFLAGMASK								181 // Flugente: disabilities get a flagmask
 #define			PROFILETYPE_STORED								180 // Flugente: the type of each profile is stored in the savegame
 #define			CORPSE_DISPOSAL									179 // Flugente: corpses can be removed by assignment
@@ -33,7 +32,6 @@ extern	CHAR16		zBuildInformation[256];
 #define			INDIVIDUAL_MILITIA_EXP_FLOAT					177 // Flugente: changed the way we store individual militia experience
 #define			CHAT_TO_DISTRACT								176	// Flugente: internal variable allows us to distract enemies by engrossing them in conversation
 #define			INDIVIDUAL_MILITIA_RANKFIX						175	// Flugente: internal individual militia change requires variable change
-#define			DRAGPERSONS										174	// Flugente: we can drag people and corpses now
 #define			SEPARATE_VOICESETS								173 // Flugente: voice sets are now separate from profile slots, and we can have many more of them
 #define			HACKABLE_SAMS									172 // Flugente: SAM sites now have a status for hacking
 #define			LUA_MODDERDATA									171 // Flugente: modders can set and use data in an exclusive array

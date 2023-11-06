@@ -1829,18 +1829,18 @@ BOOLEAN ExecuteOverhead( )
                             //  dAngle = (FLOAT)atan2( dDeltaX, dDeltaY );
                             dAngle = gdRadiansForAngle[ pSoldier->bMovementDirection ];
 
-							FLOAT movementchange = gAnimControl[pSoldier->usAnimState].dMovementChange;
-
                             // For walking, base it on body type!
                             if ( pSoldier->usAnimState == WALKING || 
                                     pSoldier->usAnimState == WALKING_WEAPON_RDY ||
                                     pSoldier->usAnimState == WALKING_DUAL_RDY ||
                                     pSoldier->usAnimState == WALKING_ALTERNATIVE_RDY )
                             {
-								movementchange = gubAnimWalkSpeeds[pSoldier->ubBodyType].dMovementChange;
+                                pSoldier->MoveMerc(gubAnimWalkSpeeds[pSoldier->ubBodyType].dMovementChange, dAngle, TRUE);
                             }
-
-							pSoldier->MoveMerc( movementchange, dAngle, TRUE );
+                            else
+                            {
+                                pSoldier->MoveMerc(gAnimControl[pSoldier->usAnimState].dMovementChange, dAngle, TRUE);
+                            }
 						}
                     }
                     // Check for direction change
@@ -2066,8 +2066,8 @@ void HandleLocateToGuyAsHeWalks( SOLDIERTYPE *pSoldier )
     }
 }
 
-//#pragma optimize("gpt",on)
-  //  __forceinline
+#pragma optimize("gpt",on)
+    __forceinline
 BOOLEAN HandleGotoNewGridNo( SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving, BOOLEAN fInitialMove, UINT16 usAnimState )
 {
     INT16                           sAPCost;
@@ -2771,9 +2771,6 @@ BOOLEAN HandleAtNewGridNo( SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving )
     PROFILLUA_sGridNo = pSoldier->sGridNo;
     PROFILLUA_ubDirectiono = pSoldier->ubDirection;
     PROFILLUA_bTeam = pSoldier->bTeam;
-
-	// sevenfm: reached new spot, enabled dragging sound
-	pSoldier->usSoldierFlagMask2 &= ~SOLDIER_DRAG_SOUND;
 
     // ATE; Handle bad guys, as they fade, to cancel it if
     // too long...
@@ -9247,9 +9244,6 @@ void HandleSuppressionFire( UINT8 ubTargetedMerc, UINT8 ubCausedAttacker )
 				{
 					pSoldier->bScopeMode = USE_BEST_SCOPE;
 				}
-
-				// sevenfm: stop dragging when changing stance/cowering under suppression
-				pSoldier->CancelDrag();
 
                 DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("HandleSuppressionFire: change stance"));
                 pSoldier->ChangeSoldierStance( ubNewStance );

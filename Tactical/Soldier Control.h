@@ -428,7 +428,6 @@ enum
 #define SOLDIER_MERC_POW_LOCATIONKNOWN		0x00020000					// we are a POW, but the player has discovered our location
 #define SOLDIER_SURGERY_BOOSTED				0x00040000					// we are a boosted performing surgery (e.g. by using up a blood bag)
 
-#define SOLDIER_DRAG_SOUND					0x00080000					// played sound when started dragging
 #define SOLDIER_SPENT_AP					0x00100000					// soldier has spent some AP this turn (including realtime)
 #define SOLDIER_TURNCOAT					0x00200000					// this enemy soldier will switch to the militia team if ordered to
 #define SOLDIER_BACK_ATTACK					0x00400000					// soldier was attacked from the back
@@ -630,7 +629,6 @@ enum{
 	SKILLS_VARIOUS_FIRST,
 	SKILLS_SPOTTER = SKILLS_VARIOUS_FIRST,
 	SKILLS_FOCUS,
-	SKILLS_DRAG,
 	SKILLS_FILL_CANTEENS,
 	SKILLS_VARIOUS_LAST = SKILLS_FILL_CANTEENS,
 
@@ -1542,10 +1540,10 @@ public:
 	UINT8	ubMilitiaAssists;		// Flugente: stores militia assists
 	INT8	sNonNPCTraderID;		// Flugente: we can set up non-NPC soldiers to be merchants, we store their dealer id here (value > 0 means arms dealer entry x)
 	//INT8	bUnusedINT8_3;
-	UINT8	usDragPersonID;			// Flugente: id of person we are dragging
+	INT8	bUnusedINT8_3;			// Flugente: id of person we are dragging
 
 	//INT16	bUnusedINT16_4;
-	INT16	sDragCorpseID;			// Flugente: id of corpse we are dragging
+	INT16	bUnusedINT16_4;			// Flugente: id of corpse we are dragging
 
 	UINT16	usChatPartnerID;		// Flugente: the id of another merc we are 'chatting' with
 	
@@ -1605,9 +1603,6 @@ public:
 
 	// Flugente: store disabilities as a flagmask, so we can have multiple ones
 	UINT32	usDisabilityFlagMask;
-
-	// Flugente: drag structures
-	INT32	sDragGridNo;
 	
 #ifdef JA2UB
 	//ja25
@@ -1803,8 +1798,6 @@ public:
 	// sevenfm
 	void BreakWindow(void);
 	BOOLEAN CanBreakWindow(void);
-	BOOLEAN CanStartDrag(void);
-	void StartDrag(void);
 
 	void UpdateRobotControllerGivenController( void );
 	void UpdateRobotControllerGivenRobot( void );
@@ -2063,17 +2056,6 @@ public:
 	BOOLEAN		IsRiotShieldEquipped();
 	void		DestroyEquippedRiotShield();
 	void		RiotShieldTakeDamage(INT32 sDamage);
-
-	// Flugente: drag people
-	BOOLEAN		CanDragInPrinciple(BOOLEAN fCheckStance = FALSE);
-	BOOLEAN		CanDragPerson(UINT16 usID, BOOLEAN fCheckStance = FALSE);
-	BOOLEAN		CanDragCorpse(UINT16 usCorpseNum, BOOLEAN fCheckStance = FALSE);
-	BOOLEAN		CanDragStructure(INT32 sGridNo, BOOLEAN fCheckStance = FALSE);
-	BOOLEAN		IsDragging(bool aStopIfConditionNotSatisfied = true);
-	void		SetDragOrderPerson( UINT16 usID );
-	void		SetDragOrderCorpse( UINT32 usID );
-	void		SetDragOrderStructure( INT32 sGridNo );
-	void		CancelDrag();
 
 	// Flugente: spy assignments
 	UINT8		GetUncoverRisk();

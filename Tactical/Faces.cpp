@@ -2166,12 +2166,6 @@ void HandleRenderFaceAdjustments( FACETYPE *pFace, BOOLEAN fDisplayBuffer, BOOLE
 				bNumRightIcons++;
 			}
 
-			// Flugente: drag stuff
-			if (MercPtrs[pFace->ubSoldierID]->IsDragging())
-			{
-				DoRightIcon(uiRenderBuffer, pFace, sFaceX, sFaceY, bNumRightIcons, 31);
-				++bNumRightIcons;
-			}
 
 			// Assignments
 			switch (pSoldier->bAssignment)

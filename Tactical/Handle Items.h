@@ -160,20 +160,6 @@ typedef struct INTERACTIVE_STRUCTURE {
 extern INTERACTIVE_STRUCTURE gInteractiveStructure[INTERACTIVE_STRUCTURE_MAX];
 extern UINT32 gMaxInteractiveStructureRead;
 
-// Flugente: we need to define what structures can be moved. Otherwise the player will drag around parts of the scenery.
-typedef struct STRUCTURE_MOVEPOSSIBLE {
-	STRUCTURE_MOVEPOSSIBLE()
-		: szTileSetDisplayName(), szTileSetName() {}
-
-	char szTileSetDisplayName[20];				// name of this structure to the player (tileset names are obscure)
-	char szTileSetName[20];						// name of the tileset
-	std::vector<UINT8> tilevector;				// structures in the tileset that we can deconstruct
-} STRUCTURE_MOVEPOSSIBLE;
-
-#define STRUCTURE_MOVEPOSSIBLE_MAX		200
-
-extern STRUCTURE_MOVEPOSSIBLE gStructureMovePossible[STRUCTURE_MOVEPOSSIBLE_MAX];
-
 class SOLDIERTYPE;
 INT32 HandleItem( SOLDIERTYPE *pSoldier, INT32 sGridNo, INT8 bLevel, UINT16 usHandItem, BOOLEAN fFromUI );
 void SoldierPickupItem( SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT32 sGridNo, INT8 bZLevel );
@@ -201,12 +187,10 @@ OBJECTTYPE* InternalAddItemToPool( INT32 *psGridNo, OBJECTTYPE *pObject, INT8 bV
 INT32 AdjustGridNoForItemPlacement( SOLDIERTYPE *pSoldier, INT32 sGridNo );
 BOOLEAN	GetItemPool( INT32 usMapPos, ITEM_POOL **ppItemPool, UINT8 ubLevel );
 BOOLEAN	GetItemPoolFromGround( INT32 sMapPos, ITEM_POOL **ppItemPool );
-BOOLEAN	GetItemPoolFromRoof( INT32 sMapPos, ITEM_POOL **ppItemPool );
 BOOLEAN DrawItemPoolList( ITEM_POOL *pItemPool, INT32 sGridNo, UINT8 bCommand, INT8 bZLevel, INT16 sXPos, INT16 sYPos );
 BOOLEAN RemoveItemFromPool( INT32 sGridNo, INT32 iItemIndex, UINT8 ubLevel );
 BOOLEAN ItemExistsAtLocation( INT32 sGridNo, INT32 iItemIndex, UINT8 ubLevel );
 BOOLEAN MoveItemPools( INT32 sStartPos, INT32 sEndPos, INT8 bStartLevel, INT8 bEndLevel );
-BOOLEAN MoveItemPools_ForDragging( INT32 sStartPos, INT32 sEndPos, INT8 bStartLevel, INT8 bEndLevel );
 
 void SetItemPoolLocator( ITEM_POOL *pItemPool );
 void SetItemPoolLocatorWithCallback( ITEM_POOL *pItemPool, ITEM_POOL_LOCATOR_HOOK Callback );
@@ -292,12 +276,6 @@ BOOLEAN	BuildStructFromName( INT32 sGridNo, INT8 sLevel, const char* aStr, UINT8
 
 BOOLEAN	CanRemoveFortification( INT32 sGridNo, INT8 sLevel, UINT32 usStructureconstructindex );
 BOOLEAN	RemoveFortification( INT32 sGridNo, INT8 sLevel, UINT32 usStructureconstructindex );
-
-BOOLEAN	IsDragStructurePresent( INT32 sGridNo, INT8 sLevel, UINT32& arusTileType, UINT16& arusStructureNumber, UINT8& arusHitpoints, UINT8& arusDecalFlags );
-void	GetDragStructureXmlEntry( UINT32 ausTileType, UINT16 ausStructureNumber, int& arXmlVectorEntry );
-BOOLEAN	RemoveStructDrag( INT32 sGridNo, INT8 sLevel, UINT32 uiTileType );
-void	CorrectDragStructData( INT32 sGridNo, INT8 sLevel, UINT8 ausHitpoints, UINT8 ausDecalFlags );
-BOOLEAN	BuildStructDrag( INT32 sGridNo, INT8 sLevel, UINT32 uiTileType, UINT8 usIndex, UINT16 usSoldierID );
 
 void UpdateFortificationPossibleAmount();
 void HandleFortificationUpdate();

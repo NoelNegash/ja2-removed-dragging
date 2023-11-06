@@ -2337,15 +2337,9 @@ BOOLEAN SOLDIERTYPE::Load(HWFILE hFile)
 		numBytesRead = ReadFieldByField(hFile, &this->bScopeMode, sizeof(bScopeMode), sizeof(INT8), numBytesRead);
 		numBytesRead = ReadFieldByField(hFile, &this->ubMilitiaAssists, sizeof(ubMilitiaAssists), sizeof(UINT8), numBytesRead );
 		numBytesRead = ReadFieldByField(hFile, &this->sNonNPCTraderID, sizeof(sNonNPCTraderID), sizeof(INT8), numBytesRead );
-		//numBytesRead = ReadFieldByField(hFile, &this->bUnusedINT8_3, sizeof(bUnusedINT8_3), sizeof(INT8), numBytesRead );
-		numBytesRead = ReadFieldByField(hFile, &this->usDragPersonID, sizeof(usDragPersonID), sizeof(UINT8), numBytesRead );
-		//numBytesRead = ReadFieldByField(hFile, &this->bUnusedINT16_4, sizeof(bUnusedINT16_4), sizeof(INT16), numBytesRead );
-		numBytesRead = ReadFieldByField(hFile, &this->sDragCorpseID, sizeof(sDragCorpseID), sizeof(INT16), numBytesRead );
+		numBytesRead = ReadFieldByField(hFile, &this->bUnusedINT8_3, sizeof(bUnusedINT8_3), sizeof(INT8), numBytesRead );
+		numBytesRead = ReadFieldByField(hFile, &this->bUnusedINT16_4, sizeof(bUnusedINT16_4), sizeof(INT16), numBytesRead );
 		
-		if ( guiCurrentSaveGameVersion < DRAGPERSONS )
-		{
-			this->CancelDrag();
-		}
 
 		numBytesRead = ReadFieldByField(hFile, &this->usChatPartnerID, sizeof( usChatPartnerID ), sizeof(INT16), numBytesRead );
 
@@ -2578,18 +2572,6 @@ BOOLEAN SOLDIERTYPE::Load(HWFILE hFile)
 			this->usDisabilityFlagMask = 0;
 
 			for ( int i = 0; i < sizeof( usDisabilityFlagMask ); ++i )
-				buffer++;
-		}
-
-		if ( guiCurrentSaveGameVersion >= DRAGSTRUCTURE )
-		{
-			numBytesRead = ReadFieldByField( hFile, &this->sDragGridNo, sizeof( sDragGridNo ), sizeof( INT32 ), numBytesRead );
-		}
-		else
-		{
-			this->sDragGridNo = NOWHERE;
-
-			for ( int i = 0; i < sizeof( sDragGridNo ); ++i )
 				buffer++;
 		}
 
