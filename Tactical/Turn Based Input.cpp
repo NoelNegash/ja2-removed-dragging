@@ -161,7 +161,6 @@ extern ArtilleryTeam	gArtilleryTeam;
 extern ReinforcementSector	gReinforcementSector;
 extern ReinforcementNumber	gReinforcementNumber;
 extern SoldierSelection	gSoldierSelection;
-extern DragSelection	gDragSelection;
 
 extern  MOUSE_REGION    gMPanelRegion;
 
@@ -2144,12 +2143,6 @@ void GetKeyboardInput( UINT32 *puiNewEvent )
 				DeleteKeyRingPopup( );
 				continue;
 			}
-
-			if (gDragSelection.Active())
-			{
-				gDragSelection.Cancel();
-				continue;
-			}
 			else if (gReinforcementNumber.Active())
 			{
 				gReinforcementNumber.Cancel();
@@ -2231,16 +2224,6 @@ void GetKeyboardInput( UINT32 *puiNewEvent )
 					*puiNewEvent = A_CHANGE_TO_MOVE;
 					continue;
 				}
-			}
-
-			// sevenfm: also stop dragging
-			if (gusSelectedSoldier != NOBODY &&
-				MercPtrs[gusSelectedSoldier] &&
-				MercPtrs[gusSelectedSoldier]->IsDragging(false))
-			{
-				MercPtrs[gusSelectedSoldier]->CancelDrag();
-				DirtyMercPanelInterface(MercPtrs[gusSelectedSoldier], DIRTYLEVEL2);
-				continue;
 			}
 
 			// sevenfm: unready weapon
@@ -2959,16 +2942,6 @@ void GetKeyboardInput( UINT32 *puiNewEvent )
 						{
 							if (EnoughPoints(pSoldier, GetAPsToBreakWindow(pSoldier, TRUE), BP_USE_CROWBAR, TRUE))
 								pSoldier->BreakWindow();
-						}
-						else if (pSoldier->CanStartDrag())
-						{
-							INT32 sNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(pSoldier->ubDirection));
-
-							if (!TileIsOutOfBounds(sNewGridNo) && sNewGridNo != pSoldier->sGridNo)
-							{
-								if (EnoughPoints(pSoldier, GetAPsToStartDrag(pSoldier, sNewGridNo), 0, TRUE))
-									pSoldier->StartDrag();
-							}
 						}
 					}
 				}

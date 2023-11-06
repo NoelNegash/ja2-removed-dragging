@@ -2141,8 +2141,6 @@ void InitSoldierStruct( SOLDIERTYPE *pSoldier )
 
 	// sevenfm: initialize additional data
 	pSoldier->InitializeExtraData();
-
-	pSoldier->sDragGridNo = NOWHERE;
 	pSoldier->sFocusGridNo = NOWHERE;
 }
 

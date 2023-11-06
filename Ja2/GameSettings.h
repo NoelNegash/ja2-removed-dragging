@@ -2729,7 +2729,6 @@ typedef struct
 	// ------------ MISC MODIFIERS --------------
 	// Flugente
 	FLOAT fShieldMovementAPCostModifier;		// movement AP costs are multiplied with this while a shield is equipped
-	FLOAT fDragAPCostModifier;
 
 }ITEM_SETTINGS;
 

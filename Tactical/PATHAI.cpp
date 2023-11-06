@@ -1389,12 +1389,6 @@ INT16 AStarPathfinder::CalcAP(int const terrainCost, UINT8 const direction)
 		movementAPCost *= gItemSettings.fShieldMovementAPCostModifier;
 	}
 
-	// Flugente: dragging someone
-	if ( pSoldier->IsDragging( false ) )
-	{
-		movementAPCost *= gItemSettings.fDragAPCostModifier;
-	}
-
 	if (terrainCost == TRAVELCOST_FENCE)
 	{
 		switch( movementModeToUseForAPs )
@@ -3365,11 +3359,6 @@ if(!GridNoOnVisibleWorldTile(iDestination))
 					ubAPCost *= gItemSettings.fShieldMovementAPCostModifier;
 				}
 
-				// Flugente: dragging someone
-				if ( s->IsDragging( ) )
-				{
-					ubAPCost *= gItemSettings.fDragAPCostModifier;
-				}
 
 				// SANDRO - moved backpack check to here
 				// Moa: backpack penalty
@@ -4480,12 +4469,6 @@ INT32 PlotPath( SOLDIERTYPE *pSold, INT32 sDestGridNo, INT8 bCopyRoute, INT8 bPl
 					{
 						sMovementAPsCost *= gItemSettings.fShieldMovementAPCostModifier;
 					}
-				
-					// Flugente: dragging someone
-					if ( pSold->IsDragging( ) )
-					{
-						sMovementAPsCost *= gItemSettings.fDragAPCostModifier;
-					}
 
 					// Check for backpack
 					sMovementAPsCost += usBackpackPenalty;
@@ -4590,15 +4573,6 @@ INT32 PlotPath( SOLDIERTYPE *pSold, INT32 sDestGridNo, INT8 bCopyRoute, INT8 bPl
 					sPointsCrawl *= gItemSettings.fShieldMovementAPCostModifier;
 					sPointsSwat *= gItemSettings.fShieldMovementAPCostModifier;
 					sPointsRun *= gItemSettings.fShieldMovementAPCostModifier;
-				}
-
-				// Flugente: dragging someone
-				if ( pSold->IsDragging() )
-				{
-					sPointsWalk *= gItemSettings.fDragAPCostModifier;
-					sPointsCrawl *= gItemSettings.fDragAPCostModifier;
-					sPointsSwat *= gItemSettings.fDragAPCostModifier;
-					sPointsRun *= gItemSettings.fDragAPCostModifier;
 				}
 
 				// Check for backpack

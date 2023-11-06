@@ -33,7 +33,6 @@
 #include "CampaignStats.h"		// added by Flugente
 #include "Points.h"				// added by Flugente
 #include "Interface Control.h"		// added by Flugente for DrawExplosionWarning(...)
-#include "SkillMenu.h"
 
 #include "Soldier Macros.h"
 #include "connect.h"
@@ -4323,8 +4322,6 @@ void HandleExplosionQueue( void )
 	}
 }
 
-extern DragSelection	gDragSelection;
-
 // Flugente: show warnings around armed timebombs both in map and inventories
 void HandleExplosionWarningAnimations( )
 {
@@ -4405,94 +4402,6 @@ void HandleExplosionWarningAnimations( )
 					// if conditions don't apply, deactivate skill. This will cause it to update to status changes very fast
 					pSoldier->usSoldierFlagMask2 &= ~SOLDIER_TRAIT_FOCUS;
 					pSoldier->sFocusGridNo = NOWHERE;
-				}
-			}
-
-			// sevenfm: show draggable objects
-			if (gDragSelection.Active()) // || gCurrentUIMode == HANDCURSOR_MODE)
-			{
-				// check all tiles on screen
-				UINT32 tiletype;
-				UINT16 structurenumber;
-				UINT8 hitpoints;
-				UINT8 decalflag;
-				INT8 bLevel = pSoldier->pathing.bLevel;
-				UINT16 usRoomNo;
-
-				for (INT32 sSpot = 0; sSpot < WORLD_MAX; sSpot++)
-				{
-					if (!TileIsOutOfBounds(sSpot) &&
-						GridNoOnVisibleWorldTile(sSpot) &&
-						GridNoOnScreen(sSpot) &&
-						!TERRAIN_IS_HIGH_WATER(sSpot) &&
-						!InAHiddenRoom(sSpot, &usRoomNo))
-					{
-						BOOLEAN fShow = FALSE;
-
-						if (IsDragStructurePresent(sSpot, bLevel, tiletype, structurenumber, hitpoints, decalflag) &&
-							!Water(sSpot, bLevel) &&
-							FindNotWaterNearby(sSpot, bLevel))
-						{
-							fShow = TRUE;
-						}
-
-						// soldiers
-						if (!fShow)
-						{
-							for (UINT32 ubID = gTacticalStatus.Team[OUR_TEAM].bFirstID; ubID <= gTacticalStatus.Team[CIV_TEAM].bLastID; ++ubID)
-							{
-								if (ubID != pSoldier->ubID &&
-									MercPtrs[ubID] &&
-									MercPtrs[ubID]->sGridNo == sSpot &&
-									MercPtrs[ubID]->bVisible == TRUE &&
-									MercPtrs[ubID]->pathing.bLevel == bLevel &&
-									gAnimControl[MercPtrs[ubID]->usAnimState].ubEndHeight == ANIM_PRONE &&
-									!Water(MercPtrs[ubID]->sGridNo, MercPtrs[ubID]->pathing.bLevel) &&
-									pSoldier->ubBodyType <= REGFEMALE &&
-									(MercPtrs[ubID]->bTeam == pSoldier->bTeam || MercPtrs[ubID]->IsUnconscious() || MercPtrs[ubID]->stats.bLife < OKLIFE))
-								{
-									fShow = TRUE;
-								}
-							}
-						}
-
-						// corpses
-						if (!fShow)
-						{
-							ROTTING_CORPSE* pCorpse;
-							for (INT32 sCorpseID = 0; sCorpseID < giNumRottingCorpse; ++sCorpseID)
-							{
-								pCorpse = &(gRottingCorpse[sCorpseID]);
-
-								if (pCorpse &&
-									pCorpse->fActivated &&
-									pCorpse->def.bLevel == pSoldier->pathing.bLevel &&
-									pCorpse->def.bVisible == TRUE &&
-									sSpot == pCorpse->def.sGridNo &&
-									pCorpse->def.ubBodyType < COW &&
-									pCorpse->def.ubBodyType != QUEENMONSTER)
-								{
-									fShow = TRUE;
-								}
-							}
-						}
-
-						if (fShow)
-						{
-							usColor = Get16BPPColor(FROMRGB(64, 0, 96));
-							sRadius = (INT32)(sqrt(0.5) * (20));
-
-							if (bLevel > 0)
-							{
-								DrawTraitRadius(sSpot, bLevel, sRadius, 2, usColor);
-								DrawTraitRadius(sSpot, bLevel, sRadius + 4, 2, usColor);
-							}
-							else
-							{
-								DrawTraitRadius(sSpot, bLevel, sRadius, 2, usColor);
-							}
-						}
-					}
 				}
 			}
 
